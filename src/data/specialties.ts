@@ -1,0 +1,15 @@
+export type Specialty =
+  | 'Allergology'
+  | 'Dermatology'
+  | 'Emergency Medicine'
+  | 'Family Medicine'
+  | 'Internal Medicine'
+  | 'Neurology'
+  | 'Obstetrics and Gynecology'
+  | 'Oncology'
+  | 'Ophthalmology'
+  | 'Pediatrics'
+  | 'Psychiatry'
+  | 'Radiology'
+  | 'Surgery'
+  | 'Urology';
