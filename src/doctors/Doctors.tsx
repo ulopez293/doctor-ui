@@ -10,12 +10,12 @@ export const Doctors = () => {
                     </h2>
                 </div>
                 <div className="grid grid-cols-1 min-[500px]:grid-cols-2 md:grid-cols-6 lg:grid-cols-5 gap-8 max-w-xl mx-auto md:max-w-3xl lg:max-w-full">
-                    {doctorsList.map((member, index) => (
-                        <div key={index} className="block group md:col-span-2 lg:col-span-1 p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300">
+                    {doctorsList.map((member) => (
+                        <div key={member.id} className="block group md:col-span-2 lg:col-span-1 p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300">
                             <div className="relative mb-6">
                                 <img
                                     src={member.imageUrl}
-                                    alt={`${member.name} image`}
+                                    alt={`${member.name}`}
                                     className="w-40 h-40 rounded-full mx-auto object-cover border-4 border-solid border-transparent group-hover:border-indigo-600 transition-all duration-500"
                                 />
                             </div>
@@ -28,7 +28,7 @@ export const Doctors = () => {
                             </p>
                             <p className="text-center text-sm text-gray-500">{member.location}</p>
                             <div className="mt-4 flex justify-center">
-                                <button className="px-4 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-colors duration-300">
+                                <button type="button" className="px-4 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-colors duration-300">
                                     Book Appointment
                                 </button>
                             </div>

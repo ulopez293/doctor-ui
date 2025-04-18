@@ -63,23 +63,23 @@ export function Navbar() {
                   <MenuItems className="absolute z-10 mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
                     <MenuItem>
                       {({ active }) => (
-                        <a
-                          href="#"
-                          onClick={handleMenuItemClick} // Cierra el menú cuando se hace clic
+                        <button
+                          type='button'
+                          onClick={handleMenuItemClick}
                           className={classNames(
                             active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                             'cursor-pointer block px-4 py-2 text-sm'
                           )}
                         >
                           All Doctors
-                        </a>
+                        </button>
                       )}
                     </MenuItem>
 
                     <MenuItem>
                       {({ active }) => (
-                        <a
-                          href="#"
+                        <button
+                          type='button'
                           onClick={handleMenuItemClick}
                           className={classNames(
                             active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
@@ -87,14 +87,14 @@ export function Navbar() {
                           )}
                         >
                           By Specialty
-                        </a>
+                        </button>
                       )}
                     </MenuItem>
 
                     <MenuItem>
                       {({ active }) => (
-                        <a
-                          href="#"
+                        <button
+                          type='button'
                           onClick={handleMenuItemClick}
                           className={classNames(
                             active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
@@ -102,15 +102,15 @@ export function Navbar() {
                           )}
                         >
                           Available Now
-                        </a>
+                        </button>
                       )}
                     </MenuItem>
                   </MenuItems>
                 </Menu>
               ) : (
-                <a
+                <button
+                  type='button'
                   key={item.name}
-                  href={item.href}
                   className={classNames(
                     item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                     'rounded-md px-3 py-2 text-sm font-medium'
@@ -118,7 +118,7 @@ export function Navbar() {
                   aria-current={item.current ? 'page' : undefined}
                 >
                   {item.name}
-                </a>
+                </button>
               )
             )}
           </div>
@@ -152,8 +152,8 @@ export function Navbar() {
               >
                 <MenuItem>
                   {({ active }) => (
-                    <a
-                      href="#"
+                    <button
+                      type='button'
                       onClick={handleMenuItemClick} // Cierra el menú
                       className={classNames(
                         active ? 'bg-gray-100' : '',
@@ -161,14 +161,14 @@ export function Navbar() {
                       )}
                     >
                       Your Profile
-                    </a>
+                    </button>
                   )}
                 </MenuItem>
 
                 <MenuItem>
                   {({ active }) => (
-                    <a
-                      href="#"
+                    <button
+                      type='button'
                       onClick={handleMenuItemClick}
                       className={classNames(
                         active ? 'bg-gray-100' : '',
@@ -176,14 +176,14 @@ export function Navbar() {
                       )}
                     >
                       Settings
-                    </a>
+                    </button>
                   )}
                 </MenuItem>
 
                 <MenuItem>
                   {({ active }) => (
-                    <a
-                      href="#"
+                    <button
+                      type='button'
                       onClick={handleMenuItemClick}
                       className={classNames(
                         active ? 'bg-gray-100' : '',
@@ -191,7 +191,7 @@ export function Navbar() {
                       )}
                     >
                       Sign out
-                    </a>
+                    </button>
                   )}
                 </MenuItem>
               </MenuItems>
@@ -217,49 +217,49 @@ export function Navbar() {
                 <MenuItems className="absolute left-2 z-10 mt-1 w-48 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
                   <MenuItem>
                     {({ active }) => (
-                      <a
-                        href="#"
+                      <button
+                        type='button'
                         className={`block px-4 py-2 text-sm ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}
                       >
                         All Doctors
-                      </a>
+                      </button>
                     )}
                   </MenuItem>
 
                   <MenuItem>
                     {({ active }) => (
-                      <a
-                        href="#"
+                      <button
+                        type='button'
                         className={`block px-4 py-2 text-sm ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}
                       >
                         By Specialty
-                      </a>
+                      </button>
                     )}
                   </MenuItem>
 
                   <MenuItem>
                     {({ active }) => (
-                      <a
-                        href="#"
+                      <button
+                        type='button'
                         className={`block px-4 py-2 text-sm ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}
                       >
                         Available Now
-                      </a>
+                      </button>
                     )}
                   </MenuItem>
                 </MenuItems>
               </Menu>
             ) : (
-              <a
+              <button
+                type='button'
                 key={item.name}
-                href={item.href}
                 className={classNames(
                   item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                   'block rounded-md px-3 py-2 text-base font-medium'
                 )}
               >
                 {item.name}
-              </a>
+              </button>
             )
           )}
         </div>

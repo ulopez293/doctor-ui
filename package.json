@@ -6,7 +6,8 @@
   "scripts": {
     "start": "parcel",
     "build": "parcel build",
-    "lint": "eslint src"
+    "lint": "biome check ./src",
+    "format": "biome format ./src --write"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.2",
@@ -18,16 +19,10 @@
     "tailwindcss": "^4.1.4"
   },
   "devDependencies": {
-    "eslint": "^8.57.0",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-config-react-app": "^6.0.0",
-    "@babel/eslint-parser": "^7.21.3",
+    "@biomejs/biome": "^1.9.4",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "parcel": "^2.14.0",
-    "typescript-eslint": "^6.21.0"
-  },
-  "engines": {
-    "node": "20.x"
+    "globals": "^16.0.0",
+    "parcel": "^2.14.0"
   }
 }
