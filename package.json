@@ -5,7 +5,7 @@
   "source": "src/index.html",
   "scripts": {
     "start": "parcel",
-    "build": "parcel build --no-source-maps",
+    "build": "parcel build",
     "lint": "eslint src"
   },
   "dependencies": {
@@ -18,15 +18,16 @@
     "tailwindcss": "^4.1.4"
   },
   "devDependencies": {
-    "@eslint/compat": "^1.2.8",
-    "@eslint/js": "^9.24.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-config-react-app": "^6.0.0",
+    "@babel/eslint-parser": "^7.21.3",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "eslint": "^9.24.0",
-    "eslint-config-react-app": "^7.0.1",
-    "eslint-plugin-react": "^7.37.5",
-    "globals": "^16.0.0",
     "parcel": "^2.14.0",
-    "typescript-eslint": "^8.30.1"
+    "typescript-eslint": "^6.21.0"
+  },
+  "engines": {
+    "node": "20.x"
   }
 }
