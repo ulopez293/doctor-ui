@@ -1,7 +1,9 @@
 import { useState } from 'react'
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { FaUserDoctor } from "react-icons/fa6"
+import { specialtiesMap } from '../data/specialties'
+import type { Specialty } from '../data/specialties'
 
 const navigation = [
   { name: 'Doctor Directory', href: '#', current: true },
@@ -16,9 +18,10 @@ function classNames(...classes: (string | boolean | undefined)[]) {
 
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [dropdownOpen, setDropdownOpen] = useState(false)
 
   const handleMenuItemClick = () => {
-    setMenuOpen(false) // Cierra el menú cuando se hace clic en una opción
+    setMenuOpen(false)
   }
 
   return (
@@ -50,63 +53,35 @@ export function Navbar() {
           <div className="hidden sm:flex sm:space-x-4">
             {navigation.map((item) =>
               item.name === 'Doctor Directory' ? (
-                <Menu as="div" key={item.name} className="relative">
-                  <MenuButton
+                <div key={item.name} className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setDropdownOpen(!dropdownOpen)}
                     className={classNames(
                       item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                       'cursor-pointer rounded-md px-3 py-2 text-sm font-medium'
                     )}
                   >
                     {item.name}
-                  </MenuButton>
-
-                  <MenuItems className="absolute z-10 mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
-                    <MenuItem>
-                      {({ active }) => (
+                  </button>
+                  {dropdownOpen && (
+                    <div className="absolute left-0 z-10 mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black/5">
+                      {Array.from(specialtiesMap.values()).map((specialty: Specialty) => (
                         <button
-                          type='button'
-                          onClick={handleMenuItemClick}
-                          className={classNames(
-                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                            'cursor-pointer block px-4 py-2 text-sm'
-                          )}
+                          key={specialty}
+                          type="button"
+                          onClick={() => {
+                            handleMenuItemClick()
+                            setDropdownOpen(false)
+                          }}
+                          className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                         >
-                          All Doctors
+                          {specialty}
                         </button>
-                      )}
-                    </MenuItem>
-
-                    <MenuItem>
-                      {({ active }) => (
-                        <button
-                          type='button'
-                          onClick={handleMenuItemClick}
-                          className={classNames(
-                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                            'cursor-pointer block px-4 py-2 text-sm'
-                          )}
-                        >
-                          By Specialty
-                        </button>
-                      )}
-                    </MenuItem>
-
-                    <MenuItem>
-                      {({ active }) => (
-                        <button
-                          type='button'
-                          onClick={handleMenuItemClick}
-                          className={classNames(
-                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                            'cursor-pointer block px-4 py-2 text-sm'
-                          )}
-                        >
-                          Available Now
-                        </button>
-                      )}
-                    </MenuItem>
-                  </MenuItems>
-                </Menu>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ) : (
                 <button
                   type='button'
@@ -134,9 +109,10 @@ export function Navbar() {
             </button>
 
             {/* Profile dropdown */}
-            <Menu as="div" className="relative">
-              <MenuButton
-                onClick={() => setMenuOpen(!menuOpen)} // Controla la apertura/cierre del menú
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setMenuOpen(!menuOpen)}
                 className="cursor-pointer flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white"
               >
                 <span className="sr-only">Open user menu</span>
@@ -145,57 +121,33 @@ export function Navbar() {
                   src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e"
                   alt=""
                 />
-              </MenuButton>
-
-              <MenuItems
-                className={`absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none ${menuOpen ? 'block' : 'hidden'}`}
-              >
-                <MenuItem>
-                  {({ active }) => (
-                    <button
-                      type='button'
-                      onClick={handleMenuItemClick} // Cierra el menú
-                      className={classNames(
-                        active ? 'bg-gray-100' : '',
-                        'cursor-pointer block px-4 py-2 text-sm text-gray-700'
-                      )}
-                    >
-                      Your Profile
-                    </button>
-                  )}
-                </MenuItem>
-
-                <MenuItem>
-                  {({ active }) => (
-                    <button
-                      type='button'
-                      onClick={handleMenuItemClick}
-                      className={classNames(
-                        active ? 'bg-gray-100' : '',
-                        'cursor-pointer block px-4 py-2 text-sm text-gray-700'
-                      )}
-                    >
-                      Settings
-                    </button>
-                  )}
-                </MenuItem>
-
-                <MenuItem>
-                  {({ active }) => (
-                    <button
-                      type='button'
-                      onClick={handleMenuItemClick}
-                      className={classNames(
-                        active ? 'bg-gray-100' : '',
-                        'cursor-pointer block px-4 py-2 text-sm text-gray-700'
-                      )}
-                    >
-                      Sign out
-                    </button>
-                  )}
-                </MenuItem>
-              </MenuItems>
-            </Menu>
+              </button>
+              {menuOpen && (
+                <div className="absolute right-0 z-10 mt-2 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5">
+                  <button
+                    type="button"
+                    onClick={handleMenuItemClick}
+                    className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Your Profile
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleMenuItemClick}
+                    className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Settings
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleMenuItemClick}
+                    className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Sign out
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -205,50 +157,32 @@ export function Navbar() {
         <div className="space-y-1 px-2 pt-2 pb-3">
           {navigation.map((item) =>
             item.name === 'Doctor Directory' ? (
-              <Menu as="div" key={item.name} className="relative">
-                <MenuButton
-                  as="button"
-                  className="cursor-pointer block w-full rounded-md px-3 py-2 text-left text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-                  style={{ cursor: 'pointer' }}
+              <div key={item.name} className="relative">
+                <button
+                  type="button"
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  className="block w-full rounded-md px-3 py-2 text-left text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                 >
                   {item.name}
-                </MenuButton>
-
-                <MenuItems className="absolute left-2 z-10 mt-1 w-48 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
-                  <MenuItem>
-                    {({ active }) => (
+                </button>
+                {dropdownOpen && (
+                  <div className="mt-1 space-y-1">
+                    {Array.from(specialtiesMap.values()).map((specialty: Specialty) => (
                       <button
-                        type='button'
-                        className={`block px-4 py-2 text-sm ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}
+                        key={specialty}
+                        type="button"
+                        onClick={() => {
+                          handleMenuItemClick()
+                          setDropdownOpen(false)
+                        }}
+                        className="block w-full px-4 py-2 text-left text-sm text-gray-300 hover:bg-gray-700 hover:text-white"
                       >
-                        All Doctors
+                        {specialty}
                       </button>
-                    )}
-                  </MenuItem>
-
-                  <MenuItem>
-                    {({ active }) => (
-                      <button
-                        type='button'
-                        className={`block px-4 py-2 text-sm ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}
-                      >
-                        By Specialty
-                      </button>
-                    )}
-                  </MenuItem>
-
-                  <MenuItem>
-                    {({ active }) => (
-                      <button
-                        type='button'
-                        className={`block px-4 py-2 text-sm ${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'}`}
-                      >
-                        Available Now
-                      </button>
-                    )}
-                  </MenuItem>
-                </MenuItems>
-              </Menu>
+                    ))}
+                  </div>
+                )}
+              </div>
             ) : (
               <button
                 type='button'
