@@ -1,5 +1,6 @@
 // First define the array of specialties
 const specialtyValues = [
+  'All',
   'Allergology',
   'Dermatology',
   'Emergency Medicine',

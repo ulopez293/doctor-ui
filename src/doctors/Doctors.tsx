@@ -1,19 +1,23 @@
-import { type Doctor, doctorsList } from "../data/doctors";
-import { Modal } from "../modal/Modal";
-import { DoctorAppointment } from "./DoctorAppointment";
-import { useState } from "react";
+import { useAtom } from "jotai"
+import { type Doctor, doctorsList } from "../data/doctors"
+import { Modal } from "../modal/Modal"
+import { DoctorAppointment } from "./DoctorAppointment"
+import { useState } from "react"
+import { specialtyAtom } from "../atoms/specialty"
+import { availableAtom } from "../atoms/available"
 
 interface ModalProps {
-    title: string;
-    open: boolean;
-    doctor: Doctor;
-    onClose: () => void;
+    title: string
+    open: boolean
+    doctor: Doctor
+    onClose: () => void
 }
 
-
 export const Doctors = () => {
-    const closeModal = () => setDataModal(prev => ({ ...prev, open: false }));
-    
+    const [specialty,] = useAtom(specialtyAtom)
+    const [available,] = useAtom(availableAtom)
+    const closeModal = () => setDataModal(prev => ({ ...prev, open: false }))
+
     const [dataModal, setDataModal] = useState<ModalProps>({
         title: "",
         open: false,
@@ -21,7 +25,7 @@ export const Doctors = () => {
         onClose: closeModal,
     })
     const showModal = (doctor: Doctor) => {
-        console.log("entro");
+        console.log("entro")
 
         setDataModal({
             title: `Book Appointment with ${doctor.name}`,
@@ -48,7 +52,10 @@ export const Doctors = () => {
                         </h2>
                     </div>
                     <div className="grid grid-cols-1 min-[500px]:grid-cols-2 md:grid-cols-6 lg:grid-cols-5 gap-8 max-w-xl mx-auto md:max-w-3xl lg:max-w-full">
-                        {doctorsList.map((member) => (
+                        {doctorsList.filter((member) =>
+                            (specialty === "All" || member.specialty === specialty) &&
+                            (!available || member.availability)
+                        ).map((member) => (
                             <div
                                 key={member.id}
                                 className="block group md:col-span-2 lg:col-span-1 p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
@@ -63,6 +70,9 @@ export const Doctors = () => {
                                 <h4 className="text-xl font-semibold text-gray-900 mb-2 capitalize text-center transition-all duration-500 group-hover:text-indigo-600">
                                     {member.name}
                                 </h4>
+                                <div className="text-center text-yellow-400 text-lg mb-2">
+                                    {'⭐'.repeat(member.stars)}
+                                </div>
                                 <p className="text-center text-sm text-gray-500 mb-2">
                                     {member.specialty}
                                 </p>
@@ -77,8 +87,13 @@ export const Doctors = () => {
                                 <div className="mt-4 flex justify-center">
                                     <button
                                         type="button"
-                                        className="cursor-pointer px-4 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-colors duration-300"
+                                        className={`px-4 py-2 rounded-full transition-colors duration-300
+                                            ${member.availability
+                                                ? "bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer"
+                                                : "bg-gray-400 text-white cursor-not-allowed"
+                                            }`}
                                         onClick={() => showModal(member)}
+                                        disabled={!member.availability}
                                     >
                                         Book Appointment
                                     </button>
@@ -89,5 +104,5 @@ export const Doctors = () => {
                 </div>
             </section>
         </div>
-    );
-};
+    )
+}

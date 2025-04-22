@@ -4,12 +4,14 @@ import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { FaUserDoctor } from "react-icons/fa6"
 import { specialtiesMap } from '../data/specialties'
 import type { Specialty } from '../data/specialties'
+import { specialtyAtom } from '../atoms/specialty'
+import { useAtom } from 'jotai'
+import { authAtom } from '../atoms/auth'
+import { availableAtom } from '../atoms/available'
 
 const navigation = [
   { name: 'Doctor Directory', href: '#', current: true },
   { name: 'Appointments Summary', href: '#', current: false },
-  { name: 'Projects', href: '#', current: false },
-  { name: 'Calendar', href: '#', current: false },
 ]
 
 function classNames(...classes: (string | boolean | undefined)[]) {
@@ -17,6 +19,9 @@ function classNames(...classes: (string | boolean | undefined)[]) {
 }
 
 export function Navbar() {
+  const [, setSpecialty] = useAtom(specialtyAtom)
+  const [, setAuth] = useAtom(authAtom)
+  const [, setAvailable] = useAtom(availableAtom)
   const [menuOpen, setMenuOpen] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
 
@@ -51,6 +56,50 @@ export function Navbar() {
 
           {/* Desktop nav */}
           <div className="hidden sm:flex sm:space-x-4">
+            <div className="inline-flex items-center mr-10">
+              <label
+                className="relative flex cursor-pointer items-center rounded-full p-3"
+                htmlFor="ripple-on"
+                data-ripple-dark="true"
+              >
+                <input
+                  id="ripple-on"
+                  type="checkbox"
+                  className="peer relative h-5 w-5 cursor-pointer appearance-none rounded border border-slate-300 shadow hover:shadow-md transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-slate-400 before:opacity-0 before:transition-opacity checked:border-slate-800 checked:bg-slate-800 checked:before:bg-slate-400 hover:before:opacity-10"
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      console.log("Checkbox activado ✅")
+                      setAvailable(true)
+                    } else {
+                      console.log("Checkbox desactivado ❌")
+                      setAvailable(false)
+                    }
+                  }}
+                />
+                <span className="pointer-events-none absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 text-white opacity-0 transition-opacity peer-checked:opacity-100">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-3.5 w-3.5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    stroke="currentColor"
+                    strokeWidth="1"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                </span>
+              </label>
+              <label className="cursor-pointer text-white text-sm"
+                htmlFor="ripple-on"
+              >
+                Available
+              </label>
+            </div>
+            <button></button>
             {navigation.map((item) =>
               item.name === 'Doctor Directory' ? (
                 <div key={item.name} className="relative">
@@ -73,8 +122,9 @@ export function Navbar() {
                           onClick={() => {
                             handleMenuItemClick()
                             setDropdownOpen(false)
+                            setSpecialty(specialty)
                           }}
-                          className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                          className="cursor-pointer block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                         >
                           {specialty}
                         </button>
@@ -100,13 +150,13 @@ export function Navbar() {
 
           {/* Right side */}
           <div className="flex items-center space-x-4">
-            <button
+            {/* <button
               type="button"
               className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
             >
               <span className="sr-only">View notifications</span>
               <BellIcon className="h-6 w-6" aria-hidden="true" />
-            </button>
+            </button> */}
 
             {/* Profile dropdown */}
             <div className="relative">
@@ -124,7 +174,7 @@ export function Navbar() {
               </button>
               {menuOpen && (
                 <div className="absolute right-0 z-10 mt-2 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5">
-                  <button
+                  {/* <button
                     type="button"
                     onClick={handleMenuItemClick}
                     className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
@@ -137,11 +187,14 @@ export function Navbar() {
                     className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Settings
-                  </button>
+                  </button> */}
                   <button
                     type="button"
-                    onClick={handleMenuItemClick}
-                    className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                    onClick={() => {
+                      handleMenuItemClick()
+                      setAuth(false)
+                    }}
+                    className="cursor-pointer block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Sign out
                   </button>
