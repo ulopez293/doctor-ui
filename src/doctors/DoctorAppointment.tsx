@@ -18,14 +18,14 @@ export const DoctorAppointment = ({ doctor }: { doctor: Doctor }) => {
             <p className="text-sm text-gray-500">{doctor.location}</p>
 
             <label className="block mt-4 mb-1 text-sm text-gray-700">
-                Selecciona un horario:
+                Select a schedule:
             </label>
             <select
                 onChange={handleChange}
                 defaultValue=""
                 className="w-full border rounded p-2 text-sm"
             >
-                <option defaultValue="" disabled>-- Elige un horario --</option>
+                <option defaultValue="" disabled>-- Choose a time slot --</option>
                 {doctor.availableTimeSlots.map((slot, index) => (
                     <option key={index} value={`${slot.day}|${slot.time}`}>
                         {slot.day} - {slot.time}

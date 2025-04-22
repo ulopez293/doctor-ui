@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react' // importa desde donde tengas tu lista de doctores
 import { doctorsList } from '../data/doctors'
+import { getDB } from '../db/db'
 
 interface Appointment {
+  id: string
   doctorId: string
   day: string
   time: string
@@ -12,35 +14,20 @@ export const Appointments = () => {
 
   useEffect(() => {
     const fetchAppointments = async () => {
-      const db = await openDB()
-      const tx = db.transaction('appointments', 'readonly')
-      const store = tx.objectStore('appointments')
-      const request = store.getAll()
-      request.onsuccess = () => {
-        setAppointments(request.result as Appointment[])
-      }
-      request.onerror = () => {
-        console.error('Failed to fetch appointments:', request.error)
-      }
+        const db = await getDB()
+        const all = await db.getAll('appointments')
+        setAppointments(all)
     }
 
     fetchAppointments()
   }, [])
 
-  const openDB = async () => {
-    return new Promise<IDBDatabase>((resolve, reject) => {
-      const request = indexedDB.open('appointments-db', 1)
-
-      request.onupgradeneeded = () => {
-        const db = request.result
-        if (!db.objectStoreNames.contains('appointments')) {
-          db.createObjectStore('appointments', { keyPath: 'id', autoIncrement: true })
-        }
-      }
-
-      request.onsuccess = () => resolve(request.result)
-      request.onerror = () => reject(request.error)
-    })
+  const deleteAppointment = async (id: string) => {
+    const db = await getDB()
+    const tx = db.transaction('appointments', 'readwrite')
+    const store = tx.objectStore('appointments')
+    await store.delete(id)
+    setAppointments(prev => prev.filter(appt => appt.id !== id))
   }
 
   return (
@@ -49,12 +36,12 @@ export const Appointments = () => {
         <p className="text-center col-span-full text-gray-500">No appointments scheduled.</p>
       )}
 
-      {appointments.map((appt, index) => {
+      {appointments.map((appt) => {
         const doctor = doctorsList.find(d => d.id === appt.doctorId)
         if (!doctor) return null
 
         return (
-          <div key={index} className="bg-white rounded-xl shadow-md p-4 flex flex-col items-center text-center">
+          <div key={appt.id} className="bg-white rounded-xl shadow-md p-4 flex flex-col items-center text-center">
             <img
               src={doctor.imageUrl}
               alt={doctor.name}
@@ -69,6 +56,12 @@ export const Appointments = () => {
             <div className="mt-1 text-yellow-400">
               {'★'.repeat(doctor.stars) + '☆'.repeat(5 - doctor.stars)}
             </div>
+            <button
+              onClick={() => deleteAppointment(appt.id)}
+              className="cursor-pointer mt-4 px-4 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600"
+            >
+              Eliminar
+            </button>
           </div>
         )
       })}

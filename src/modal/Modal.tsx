@@ -73,7 +73,7 @@ export const Modal = ({ title, children, open, onClose }: ModalProps) => {
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="mt-3 inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-700 sm:mt-0 sm:w-auto sm:mr-2"
+                                className="cursor-pointer mt-3 inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-700 sm:mt-0 sm:w-auto sm:mr-2"
                             >
                                 Cancel
                             </button>
