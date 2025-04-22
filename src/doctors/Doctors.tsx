@@ -5,6 +5,7 @@ import { DoctorAppointment } from "./DoctorAppointment"
 import { useState } from "react"
 import { specialtyAtom } from "../atoms/specialty"
 import { availableAtom } from "../atoms/available"
+import { appointmentAtom, selectedDoctorAtom } from "../atoms/appointment"
 
 interface ModalProps {
     title: string
@@ -16,6 +17,9 @@ interface ModalProps {
 export const Doctors = () => {
     const [specialty,] = useAtom(specialtyAtom)
     const [available,] = useAtom(availableAtom)
+    const [, setSelectedDoctor] = useAtom(selectedDoctorAtom)
+    const [, setAppointment] = useAtom(appointmentAtom)
+    
     const closeModal = () => setDataModal(prev => ({ ...prev, open: false }))
 
     const [dataModal, setDataModal] = useState<ModalProps>({
@@ -26,7 +30,8 @@ export const Doctors = () => {
     })
     const showModal = (doctor: Doctor) => {
         console.log("entro")
-
+        setSelectedDoctor({ id: doctor.id })
+        setAppointment(null)
         setDataModal({
             title: `Book Appointment with ${doctor.name}`,
             open: true,

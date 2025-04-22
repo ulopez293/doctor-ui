@@ -8,10 +8,11 @@ import { specialtyAtom } from '../atoms/specialty'
 import { useAtom } from 'jotai'
 import { authAtom } from '../atoms/auth'
 import { availableAtom } from '../atoms/available'
+import { useNavigate } from 'react-router-dom'
 
 const navigation = [
-  { name: 'Doctor Directory', href: '#', current: true },
-  { name: 'Appointments Summary', href: '#', current: false },
+  { name: 'Doctor Directory', href: '/', current: true },
+  { name: 'Appointments Summary', href: '/appointment', current: false },
 ]
 
 function classNames(...classes: (string | boolean | undefined)[]) {
@@ -24,6 +25,8 @@ export function Navbar() {
   const [, setAvailable] = useAtom(availableAtom)
   const [menuOpen, setMenuOpen] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
+  const navigate = useNavigate()
+
 
   const handleMenuItemClick = () => {
     setMenuOpen(false)
@@ -106,6 +109,7 @@ export function Navbar() {
                   <button
                     type="button"
                     onClick={() => setDropdownOpen(!dropdownOpen)}
+                    
                     className={classNames(
                       item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                       'cursor-pointer rounded-md px-3 py-2 text-sm font-medium'
@@ -123,6 +127,7 @@ export function Navbar() {
                             handleMenuItemClick()
                             setDropdownOpen(false)
                             setSpecialty(specialty)
+                            navigate('/')
                           }}
                           className="cursor-pointer block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                         >
@@ -136,9 +141,10 @@ export function Navbar() {
                 <button
                   type='button'
                   key={item.name}
+                  onClick={() => navigate(item.href)}
                   className={classNames(
                     item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'rounded-md px-3 py-2 text-sm font-medium'
+                    'rounded-md px-3 py-2 text-sm font-medium cursor-pointer'
                   )}
                   aria-current={item.current ? 'page' : undefined}
                 >

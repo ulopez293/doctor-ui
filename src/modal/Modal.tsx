@@ -1,3 +1,8 @@
+import { useAtom } from "jotai"
+import { appointmentAtom, selectedDoctorAtom } from "../atoms/appointment"
+import { getDB } from "../db/db"
+import { v4 as uuidv4 } from "uuid"
+
 export interface ModalProps {
     title: string
     open: boolean
@@ -6,9 +11,29 @@ export interface ModalProps {
 }
 
 export const Modal = ({ title, children, open, onClose }: ModalProps) => {
+    const [appointment] = useAtom(appointmentAtom)
+    const [doctor] = useAtom(selectedDoctorAtom)
 
-    const reserve = () => {
-        alert("Reserva realizada")
+    console.log(appointment)
+    console.log(doctor)
+    
+
+    const reserve = async () => {
+        if (!appointment || !doctor) {
+            alert('Doctor or schedule still missing')
+            return
+          }
+      
+          const db = await getDB()
+          await db.put('appointments', {
+            id: uuidv4(), // genera un ID único
+            doctorId: doctor.id,
+            day: appointment.day,
+            time: appointment.time,
+            createdAt: new Date().toISOString(),
+          })
+      
+          alert('Reservation saved successfully!')
         onClose()
     }
 
@@ -35,7 +60,13 @@ export const Modal = ({ title, children, open, onClose }: ModalProps) => {
                             <button
                                 type="button"
                                 onClick={() => reserve()}
-                                className="mt-3 inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-blue-700 sm:mt-0 sm:w-auto sm:ml-2"
+                                disabled={!appointment || !doctor}
+                                className={`mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-xs sm:mt-0 sm:w-auto sm:ml-2
+                                    ${!appointment || !doctor
+                                        ? 'bg-gray-400 text-white cursor-not-allowed'
+                                        : 'bg-blue-600 text-white hover:bg-blue-700 cursor-pointer'
+                                    }
+                                `}
                             >
                                 Schedule
                             </button>
